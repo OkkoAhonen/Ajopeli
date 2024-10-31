@@ -5,6 +5,7 @@ using UnityEngine;
 public class playerMovementScript : MonoBehaviour
 {
     public float moveSpeed = 5f; // Liikkumisnopeus
+    public float rotationSpeed = 100f; // Pyörimisnopeus
 
     private Rigidbody rb;
     private Vector3 movement;
@@ -17,9 +18,19 @@ public class playerMovementScript : MonoBehaviour
 
     void Update()
     {
-        // Saadaan syötteet X- ja Z-akselilla
+        // Saadaan syötteet X- ja Z-akselilla liikkumista varten
         movement.x = Input.GetAxis("Horizontal");
-        movement.y = Input.GetAxis("Vertical");
+        //movement.z = Input.GetAxis("Vertical");
+
+        // Pyöritetään hahmoa Y-akselin ympäri
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime); // Pyörii vasemmalle
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); // Pyörii oikealle
+        }
     }
 
     void FixedUpdate()
