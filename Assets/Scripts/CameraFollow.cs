@@ -2,19 +2,15 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform player;  // Pelaajan sijainti, johon kamera kohdistuu
-    public float followSpeed = 5f;  // Kameran seuraamisnopeus
-    public Vector3 offset;  // Kameran sijainnin offset pelaajaan nähden
+    private Vector3 offset = new Vector3(0f, 0f, 0f);
+    private float smoothTime = 0.1f;
+    private Vector3 velocity = Vector3.zero;
 
-    void LateUpdate()
+    [SerializeField] private Transform target;
+
+    private void Update()
     {
-        // Haluttu kameran sijainti pelaajan nykyisen sijainnin ja offsetin mukaan
-        Vector3 targetPosition = player.position + offset;
-
-        // Kamera liikkuu kohti kohdesijaintia sulavasti
-        transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
-
-        // Kamera katsoo aina pelaajaa kohti
-        transform.LookAt(player);
+        Vector3 targetPosition = target.position + offset;
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
     }
 }
